@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramecium Research Simulation - Digital Microscopy Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .microscope-view {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e8e8e8;
+            position: relative;
+        }
+
+        .field-of-view {
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #ffffff 0%, #f8f8f8 70%, #e0e0e0 100%);
+            border: 8px solid #2c3e50;
+            box-shadow: 
+                0 0 30px rgba(0,0,0,0.3),
+                inset 0 0 50px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .field-of-view::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .field-of-view::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .scale-marker {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            z-index: 10;
+        }
+
+        .control-panel {
+            width: 350px;
+            background: white;
+            border-left: 3px solid #34495e;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .panel-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .environmental-controls {
+            background: #f8f9fa;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .control-value {
+            background: #2c3e50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: all 0.3s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .danger-zone {
+            background: linear-gradient(90deg, #ff4444, #ff8888);
+        }
+
+        .optimal-zone {
+            background: linear-gradient(90deg, #44ff44, #88ff88);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .organism-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .organism-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+
+        .organism-card.selected {
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .organism-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .organism-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .organism-status {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .status-alive { background: #d4edda; color: #155724; }
+        .status-stressed { background: #fff3cd; color: #856404; }
+        .status-dying { background: #f8d7da; color: #721c24; }
+        .status-dead { background: #6c757d; color: white; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .health-fill { background: linear-gradient(90deg, #dc3545, #ffc107, #28a745); }
+        .energy-fill { background: linear-gradient(90deg, #fd7e14, #ffc107, #20c997); }
+        .reproduction-fill { background: linear-gradient(90deg, #6f42c1, #007bff, #17a2b8); }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .paramecium {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            border-radius: 60% 40% 60% 40% / 70% 70% 30% 30%;
+            background: radial-gradient(ellipse at 30% 30%, rgba(100, 200, 100, 0.8), rgba(50, 150, 50, 0.6));
+            border: 2px solid rgba(50, 150, 50, 0.8);
+            transition: all 0.1s ease;
+            z-index: 5;
+        }
+
+        .paramecium-a {
+            background: radial-gradient(ellipse at 30% 30%, rgba(100, 200, 100, 0.8), rgba(50, 150, 50, 0.6));
+            border-color: rgba(50, 150, 50, 0.8);
+        }
+
+        .paramecium-b {
+            background: radial-gradient(ellipse at 30% 30%, rgba(100, 150, 200, 0.8), rgba(50, 100, 150, 0.6));
+            border-color: rgba(50, 100, 150, 0.8);
+        }
+
+        .nucleus {
+            position: absolute;
+            top: 40%;
+            left: 45%;
+            width: 16px;
+            height: 10px;
+            background: radial-gradient(circle, #8e44ad, #6c3483);
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(142, 68, 173, 0.6);
+        }
+
+        .contractile-vacuole {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.8), rgba(41, 128, 185, 0.4));
+            animation: vacuole-pulse 3s ease-in-out infinite;
+        }
+
+        .vacuole-1 {
+            top: 25%;
+            left: 25%;
+            width: 8px;
+            height: 8px;
+        }
+
+        .vacuole-2 {
+            bottom: 25%;
+            right: 25%;
+            width: 6px;
+            height: 6px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes vacuole-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
+
+        .cilia {
+            position: absolute;
+            width: 2px;
+            height: 6px;
+            background: rgba(50, 150, 50, 0.7);
+            border-radius: 50%;
+            transform-origin: center bottom;
+        }
+
+        .food-particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #f1c40f, #f39c12);
+            border: 1px solid #e67e22;
+            box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
+            z-index: 3;
+        }
+
+        .waste-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #8b4513;
+            opacity: 0.8;
+            z-index: 2;
+        }
+
+        .dead {
+            filter: grayscale(100%) brightness(0.5);
+            opacity: 0.3;
+        }
+
+        .reproducing {
+            animation: reproduction-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes reproduction-glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3) hue-rotate(30deg); }
+        }
+
+        .stressed {
+            animation: stress-shake 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes stress-shake {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(2px); }
+        }
+
+        .info-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            z-index: 10;
+        }
+
+        .environmental-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            border: 1px solid #ccc;
+            z-index: 10;
+        }
+
+        .indicator-optimal { border-left: 4px solid #27ae60; }
+        .indicator-warning { border-left: 4px solid #f39c12; }
+        .indicator-danger { border-left: 4px solid #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Digital Microscopy Laboratory - Paramecium Research Simulation</h1>
+        <p>Professional-grade simulation for biological research and education</p>
+    </div>
+
+    <div class="container">
+        <div class="microscope-view">
+            <div class="field-of-view" id="fieldOfView">
+                <div class="info-overlay">
+                    <strong>Magnification: 400x</strong><br>
+                    Field Diameter: 0.4mm<br>
+                    Specimen: <em>Paramecium caudatum</em>
+                </div>
+                <div class="environmental-indicator" id="envIndicator" class="indicator-optimal">
+                    Environment: OPTIMAL
+                </div>
+                <div class="scale-marker">50μm</div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <div class="panel-section environmental-controls">
+                <h3>Environmental Parameters</h3>
+                
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Temperature</span>
+                        <span class="control-value" id="tempValue">22°C</span>
+                    </div>
+                    <input type="range" class="slider" id="tempSlider" min="5" max="45" value="22" step="0.5">
+                    <small>Optimal range: 18-28°C</small>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>pH Level</span>
+                        <span class="control-value" id="phValue">7.0</span>
+                    </div>
+                    <input type="range" class="slider" id="phSlider" min="4.0" max="10.0" value="7.0" step="0.1">
+                    <small>Optimal range: 6.5-7.5</small>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Oxygen Level</span>
+                        <span class="control-value" id="oxygenValue">21%</span>
+                    </div>
+                    <input type="range" class="slider" id="oxygenSlider" min="5" max="100" value="21" step="1">
+                    <small>Optimal range: 15-25%</small>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Salinity</span>
+                        <span class="control-value" id="salinityValue">0.1‰</span>
+                    </div>
+                    <input type="range" class="slider" id="salinitySlider" min="0" max="5" value="0.1" step="0.1">
+                    <small>Optimal range: 0.0-0.5‰</small>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Environment Status</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Food Particles</div>
+                        <div class="stat-value" id="foodCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Waste Particles</div>
+                        <div class="stat-value" id="wasteCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Population</div>
+                        <div class="stat-value" id="populationCount">2</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Simulation Time</div>
+                        <div class="stat-value" id="simTime">0s</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Organism Status</h3>
+                <div class="organism-stats" id="organismStats">
+                    <!-- Organisms will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Controls</h3>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="addFood()">Add Food</button>
+                    <button class="btn btn-success" onclick="addNutrientBurst()">Nutrient Burst</button>
+                    <button class="btn btn-warning" onclick="togglePause()">Pause/Resume</button>
+                    <button class="btn btn-danger" onclick="resetSimulation()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Paramecium {
+            constructor(x, y, id, type = 'A') {
+                this.id = id;
+                this.type = type;
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.angle = Math.random() * Math.PI * 2;
+                
+                // Biological parameters
+                this.health = 100;
+                this.energy = 80 + Math.random() * 20;
+                this.age = 0;
+                this.reproductionReadiness = 0;
+                this.size = 0.9 + Math.random() * 0.2;
+                this.alive = true;
+                this.behavior = 'exploring';
+                this.lastReproduction = 0;
+                this.metabolismRate = 0.08 + Math.random() * 0.04;
+                this.speed = 1.2 + Math.random() * 0.6;
+                this.detectionRadius = 100 + Math.random() * 50;
+                this.stressLevel = 0;
+                this.competitiveness = Math.random();
+                
+                // Environmental tolerances (slight individual variation)
+                this.tempOptimal = 22 + (Math.random() - 0.5) * 4;
+                this.phOptimal = 7.0 + (Math.random() - 0.5) * 0.4;
+                this.oxygenOptimal = 21 + (Math.random() - 0.5) * 6;
+                this.salinityOptimal = 0.1 + (Math.random() - 0.5) * 0.2;
+                
+                this.element = this.createElement();
+                this.cilia = [];
+                this.createCilia();
+                this.createStatusCard();
+            }
+
+            createElement() {
+                const element = document.createElement('div');
+                element.className = `paramecium paramecium-${this.type.toLowerCase()}`;
+                element.id = `paramecium-${this.id}`;
+                
+                const nucleus = document.createElement('div');
+                nucleus.className = 'nucleus';
+                element.appendChild(nucleus);
+                
+                const vacuole1 = document.createElement('div');
+                vacuole1.className = 'contractile-vacuole vacuole-1';
+                element.appendChild(vacuole1);
+                
+                const vacuole2 = document.createElement('div');
+                vacuole2.className = 'contractile-vacuole vacuole-2';
+                element.appendChild(vacuole2);
+                
+                document.getElementById('fieldOfView').appendChild(element);
+                return element;
+            }
+
+            createCilia() {
+                for (let i = 0; i < 24; i++) {
+                    const cilia = document.createElement('div');
+                    cilia.className = 'cilia';
+                    const angle = (i / 24) * Math.PI * 2;
+                    const x = Math.cos(angle) * 42;
+                    const y = Math.sin(angle) * 22;
+                    cilia.style.left = `${x + 40}px`;
+                    cilia.style.top = `${y + 20}px`;
+                    cilia.style.transform = `rotate(${angle + Math.PI/2}rad)`;
+                    this.element.appendChild(cilia);
+                    this.cilia.push(cilia);
+                }
+            }
+
+            createStatusCard() {
+                const card = document.createElement('div');
+                card.className = 'organism-card';
+                card.id = `card-${this.id}`;
+                card.innerHTML = `
+                    <div class="organism-header">
+                        <span class="organism-name">Paramecium ${this.type}</span>
+                        <span class="organism-status status-alive">Alive</span>
+                    </div>
+                    <div>
+                        <small>Health</small>
+                        <div class="progress-bar">
+                            <div class="progress-fill health-fill" style="width: ${this.health}%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <small>Energy</small>
+                        <div class="progress-bar">
+                            <div class="progress-fill energy-fill" style="width: ${this.energy}%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <small>Reproduction</small>
+                        <div class="progress-bar">
+                            <div class="progress-fill reproduction-fill" style="width: ${this.reproductionReadiness}%"></div>
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; margin-top: 8px; color: #6c757d;">
+                        Age: <span id="age-${this.id}">0</span>s | 
+                        Behavior: <span id="behavior-${this.id}">Exploring</span>
+                    </div>
+                `;
+                document.getElementById('organismStats').appendChild(card);
+            }
+
+            update() {
+                if (!this.alive) return;
+
+                this.age += 1/60;
+                
+                // Environmental stress calculation
+                this.calculateEnvironmentalStress();
+                
+                // Metabolism affected by environment and stress
+                const stressMultiplier = 1 + this.stressLevel * 0.5;
+                this.energy -= this.metabolismRate * stressMultiplier;
+                
+                // Health management
+                if (this.energy < 20 || this.stressLevel > 0.7) {
+                    this.health -= 0.15 * (1 + this.stressLevel);
+                    this.behavior = this.energy < 10 ? 'dying' : 'stressed';
+                } else if (this.energy > 60 && this.stressLevel < 0.3) {
+                    this.health = Math.min(100, this.health + 0.08);
+                }
+
+                // Death condition
+                if (this.health <= 0) {
+                    this.die();
+                    return;
+                }
+
+                // Reproduction logic
+                if (this.health > 75 && this.energy > 80 && this.age > 45 && this.stressLevel < 0.4) {
+                    this.reproductionReadiness = Math.min(100, this.reproductionReadiness + 0.3);
+                    if (this.reproductionReadiness > 98 && this.age - this.lastReproduction > 90) {
+                        this.reproduce();
+                    }
+                }
+
+                // Behavioral updates
+                this.updateBehavior();
+                this.move();
+                this.render();
+                this.updateStatusCard();
+            }
+
+            calculateEnvironmentalStress() {
+                const temp = parseFloat(document.getElementById('tempSlider').value);
+                const ph = parseFloat(document.getElementById('phSlider').value);
+                const oxygen = parseFloat(document.getElementById('oxygenSlider').value);
+                const salinity = parseFloat(document.getElementById('salinitySlider').value);
+                
+                let stress = 0;
+                
+                // Temperature stress
+                const tempDiff = Math.abs(temp - this.tempOptimal);
+                if (tempDiff > 6) stress += 0.3;
+                else if (tempDiff > 3) stress += 0.1;
+                
+                // pH stress
+                const phDiff = Math.abs(ph - this.phOptimal);
+                if (phDiff > 1.0) stress += 0.4;
+                else if (phDiff > 0.5) stress += 0.15;
+                
+                // Oxygen stress
+                const oxygenDiff = Math.abs(oxygen - this.oxygenOptimal);
+                if (oxygenDiff > 10) stress += 0.2;
+                else if (oxygenDiff > 5) stress += 0.1;
+                
+                // Salinity stress
+                const salinityDiff = Math.abs(salinity - this.salinityOptimal);
+                if (salinityDiff > 1.0) stress += 0.25;
+                else if (salinityDiff > 0.5) stress += 0.1;
+                
+                this.stressLevel = Math.min(1, stress);
+                
+                // Visual stress indicators
+                if (this.stressLevel > 0.5) {
+                    this.element.classList.add('stressed');
+                } else {
+                    this.element.classList.remove('stressed');
+                }
+            }
+
+            updateBehavior() {
+                if (this.stressLevel > 0.7) {
+                    this.behavior = 'stressed';
+                    return;
+                }
+                
+                const nearestFood = this.findNearestFood();
+                const competitor = this.findCompetitor();
+                
+                if (nearestFood && this.energy < 70) {
+                    // Check if competitor is closer to the same food
+                    if (competitor && competitor.target === nearestFood) {
+                        if (this.competitiveness > competitor.competitiveness) {
+                            this.behavior = 'competing';
+                            this.seekFood(nearestFood, true); // Aggressive seeking
+                        } else {
+                            this.behavior = 'avoiding';
+                            this.avoidCompetitor(competitor);
+                        }
+                    } else {
+                        this.behavior = 'seeking_food';
+                        this.seekFood(nearestFood);
+                    }
+                } else if (this.energy < 25) {
+                    this.behavior = 'starving';
+                    this.vx += (Math.random() - 0.5) * 0.8;
+                    this.vy += (Math.random() - 0.5) * 0.8;
+                } else if (this.reproductionReadiness > 85) {
+                    this.behavior = 'reproductive';
+                    this.element.classList.add('reproducing');
+                } else {
+                    this.behavior = 'exploring';
+                    this.element.classList.remove('reproducing');
+                    if (Math.random() < 0.08) {
+                        this.vx += (Math.random() - 0.5) * 0.4;
+                        this.vy += (Math.random() - 0.5) * 0.4;
+                    }
+                }
+            }
+
+            findNearestFood() {
+                const foodParticles = document.querySelectorAll('.food-particle');
+                let nearest = null;
+                let minDistance = this.detectionRadius;
+
+                foodParticles.forEach(food => {
+                    const rect = food.getBoundingClientRect();
+                    const fieldRect = document.getElementById('fieldOfView').getBoundingClientRect();
+                    const foodX = rect.left - fieldRect.left + rect.width/2;
+                    const foodY = rect.top - fieldRect.top + rect.height/2;
+                    
+                    const distance = Math.sqrt((this.x - foodX)**2 + (this.y - foodY)**2);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearest = { element: food, x: foodX, y: foodY, distance };
+                    }
+                });
+
+                return nearest;
+            }
+
+            findCompetitor() {
+                const otherParamecia = paramecia.filter(p => p.id !== this.id && p.alive);
+                if (otherParamecia.length === 0) return null;
+                
+                const competitor = otherParamecia[0];
+                const distance = Math.sqrt((this.x - competitor.x)**2 + (this.y - competitor.y)**2);
+                
+                if (distance < 120) {
+                    competitor.target = this.findNearestFood();
+                    return competitor;
+                }
+                return null;
+            }
+
+            seekFood(foodTarget, aggressive = false) {
+                const dx = foodTarget.x - this.x;
+                const dy = foodTarget.y - this.y;
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                
+                if (distance < 25) {
+                    // Consume food
+                    foodTarget.element.remove();
+                    const energyGain = 20 + Math.random() * 15;
+                    this.energy = Math.min(100, this.energy + energyGain);
+                    this.health = Math.min(100, this.health + 3);
+                    this.createWasteParticle();
+                    updateCounts();
+                } else {
+                    // Move towards food
+                    const force = aggressive ? 0.5 : 0.3;
+                    this.vx += (dx / distance) * force;
+                    this.vy += (dy / distance) * force;
+                }
+            }
+
+            avoidCompetitor(competitor) {
+                const dx = competitor.x - this.x;
+                const dy = competitor.y - this.y;
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                
+                if (distance > 0) {
+                    this.vx -= (dx / distance) * 0.2;
+                    this.vy -= (dy / distance) * 0.2;
+                }
+            }
+
+            createWasteParticle() {
+                const waste = document.createElement('div');
+                waste.className = 'waste-particle';
+                waste.style.left = `${this.x + (Math.random() - 0.5) * 30}px`;
+                waste.style.top = `${this.y + (Math.random() - 0.5) * 30}px`;
+                document.getElementById('fieldOfView').appendChild(waste);
+                
+                setTimeout(() => {
+                    if (waste.parentNode) {
+                        waste.remove();
+                        updateCounts();
+                    }
+                }, 15000 + Math.random() * 10000);
+            }
+
+            reproduce() {
+                if (paramecia.length >= 6) return;
+                
+                this.reproductionReadiness = 0;
+                this.lastReproduction = this.age;
+                this.energy -= 40;
+                this.health -= 10;
+                
+                // Create offspring
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 60 + Math.random() * 40;
+                const newX = this.x + Math.cos(angle) * distance;
+                const newY = this.y + Math.sin(angle) * distance;
+                
+                // Ensure within field bounds
+                const fieldRadius = 280;
+                const centerX = 300;
+                const centerY = 300;
+                const distFromCenter = Math.sqrt((newX - centerX)**2 + (newY - centerY)**2);
+                
+                if (distFromCenter < fieldRadius) {
+                    const offspring = new Paramecium(newX, newY, paramecia.length, 
+                        this.type === 'A' ? 'C' : 'D');
+                    offspring.energy = 65;
+                    offspring.health = 85;
+                    // Inherit some characteristics with variation
+                    offspring.competitiveness = this.competitiveness + (Math.random() - 0.5) * 0.2;
+                    offspring.speed = this.speed + (Math.random() - 0.5) * 0.3;
+                    paramecia.push(offspring);
+                    
+                    // Visual effect
+                    this.element.style.filter = 'brightness(1.4) saturate(1.3)';
+                    setTimeout(() => {
+                        this.element.style.filter = '';
+                    }, 1500);
+                }
+            }
+
+            move() {
+                const fieldRadius = 280;
+                const centerX = 300;
+                const centerY = 300;
+                const distFromCenter = Math.sqrt((this.x - centerX)**2 + (this.y - centerY)**2);
+                
+                // Boundary collision
+                if (distFromCenter > fieldRadius - 20) {
+                    const angle = Math.atan2(this.y - centerY, this.x - centerX);
+                    this.x = centerX + Math.cos(angle) * (fieldRadius - 20);
+                    this.y = centerY + Math.sin(angle) * (fieldRadius - 20);
+                    
+                    // Reflect velocity
+                    const normalX = Math.cos(angle);
+                    const normalY = Math.sin(angle);
+                    const dotProduct = this.vx * normalX + this.vy * normalY;
+                    this.vx -= 2 * dotProduct * normalX;
+                    this.vy -= 2 * dotProduct * normalY;
+                    
+                    // Add randomness
+                    this.vx += (Math.random() - 0.5) * 0.4;
+                    this.vy += (Math.random() - 0.5) * 0.4;
+                }
+
+                // Speed regulation based on health and environment
+                const speedModifier = (this.health / 100) * (1 - this.stressLevel * 0.5);
+                const maxSpeed = this.speed * speedModifier;
+                
+                const speed = Math.sqrt(this.vx**2 + this.vy**2);
+                if (speed > maxSpeed) {
+                    this.vx = (this.vx / speed) * maxSpeed;
+                    this.vy = (this.vy / speed) * maxSpeed;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Drag
+                this.vx *= 0.97;
+                this.vy *= 0.97;
+                
+                // Update angle for realistic orientation
+                if (speed > 0.1) {
+                    this.angle = Math.atan2(this.vy, this.vx);
+                }
+            }
+
+            render() {
+                this.element.style.left = `${this.x - 40}px`;
+                this.element.style.top = `${this.y - 20}px`;
+                this.element.style.transform = `rotate(${this.angle}rad) scale(${this.size})`;
+                
+                // Health-based opacity and size
+                const healthFactor = Math.max(0.4, this.health / 100);
+                this.element.style.opacity = healthFactor;
+                
+                // Animate cilia based on movement and health
+                const speed = Math.sqrt(this.vx**2 + this.vy**2);
+                const ciliaSpeed = speed * 3 + this.health / 50;
+                
+                this.cilia.forEach((cilia, i) => {
+                    const phase = (Date.now() / (150 - ciliaSpeed * 10) + i * 0.2) % (Math.PI * 2);
+                    const wiggle = Math.sin(phase) * (3 + speed);
+                    const baseAngle = (i / 24) * Math.PI * 2 + Math.PI/2;
+                    cilia.style.transform = `rotate(${baseAngle + wiggle * 0.1}rad) translateY(${wiggle}px)`;
+                });
+            }
+
+            updateStatusCard() {
+                const card = document.getElementById(`card-${this.id}`);
+                if (!card) return;
+                
+                // Update status
+                let statusClass = 'status-alive';
+                let statusText = 'Alive';
+                
+                if (this.health < 30 || this.energy < 15) {
+                    statusClass = 'status-dying';
+                    statusText = 'Dying';
+                } else if (this.stressLevel > 0.5) {
+                    statusClass = 'status-stressed';
+                    statusText = 'Stressed';
+                }
+                
+                const statusElement = card.querySelector('.organism-status');
+                statusElement.className = `organism-status ${statusClass}`;
+                statusElement.textContent = statusText;
+                
+                // Update progress bars
+                card.querySelector('.health-fill').style.width = `${this.health}%`;
+                card.querySelector('.energy-fill').style.width = `${this.energy}%`;
+                card.querySelector('.reproduction-fill').style.width = `${this.reproductionReadiness}%`;
+                
+                // Update text info
+                document.getElementById(`age-${this.id}`).textContent = Math.floor(this.age);
+                document.getElementById(`behavior-${this.id}`).textContent = 
+                    this.behavior.replace('_', ' ').toUpperCase();
+            }
+
+            die() {
+                this.alive = false;
+                this.element.classList.add('dead');
+                
+                const card = document.getElementById(`card-${this.id}`);
+                if (card) {
+                    const statusElement = card.querySelector('.organism-status');
+                    statusElement.className = 'organism-status status-dead';
+                    statusElement.textContent = 'Dead';
+                }
+                
+                setTimeout(() => {
+                    if (this.element.parentNode) {
+                        this.element.remove();
+                    }
+                    if (card && card.parentNode) {
+                        card.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // Global variables
+        let paramecia = [];
+        let isPaused = false;
+        let startTime = Date.now();
+        let simulationTime = 0;
+
+        // Environmental control functions
+        function updateEnvironmentalDisplay() {
+            const temp = parseFloat(document.getElementById('tempSlider').value);
+            const ph = parseFloat(document.getElementById('phSlider').value);
+            const oxygen = parseFloat(document.getElementById('oxygenSlider').value);
+            const salinity = parseFloat(document.getElementById('salinitySlider').value);
+            
+            document.getElementById('tempValue').textContent = `${temp}°C`;
+            document.getElementById('phValue').textContent = ph.toFixed(1);
+            document.getElementById('oxygenValue').textContent = `${oxygen}%`;
+            document.getElementById('salinityValue').textContent = `${salinity.toFixed(1)}‰`;
+            
+            // Update environmental indicator
+            let envStatus = 'OPTIMAL';
+            let envClass = 'indicator-optimal';
+            
+            // Check if any parameter is in danger zone
+            if (temp < 10 || temp > 35 || ph < 5.5 || ph > 8.5 || oxygen < 10 || salinity > 2) {
+                envStatus = 'CRITICAL';
+                envClass = 'indicator-danger';
+            } else if (temp < 15 || temp > 30 || ph < 6.0 || ph > 8.0 || oxygen < 15 || salinity > 1) {
+                envStatus = 'SUBOPTIMAL';
+                envClass = 'indicator-warning';
+            }
+            
+            const indicator = document.getElementById('envIndicator');
+            indicator.textContent = `Environment: ${envStatus}`;
+            indicator.className = `environmental-indicator ${envClass}`;
+            
+            // Update slider colors based on values
+            updateSliderColor('tempSlider', temp, 18, 28);
+            updateSliderColor('phSlider', ph, 6.5, 7.5);
+            updateSliderColor('oxygenSlider', oxygen, 15, 25);
+            updateSliderColor('salinitySlider', salinity, 0, 0.5);
+        }
+
+        function updateSliderColor(sliderId, value, minOptimal, maxOptimal) {
+            const slider = document.getElementById(sliderId);
+            
+            if (value >= minOptimal && value <= maxOptimal) {
+                slider.className = 'slider optimal-zone';
+            } else {
+                slider.className = 'slider danger-zone';
+            }
+        }
+
+        function initSimulation() {
+            const centerX = 300;
+            const centerY = 300;
+            
+            // Create two competing paramecia
+            const parameciumA = new Paramecium(centerX - 80, centerY - 40, 0, 'A');
+            const parameciumB = new Paramecium(centerX + 80, centerY + 40, 1, 'B');
+            
+            paramecia.push(parameciumA, parameciumB);
+        }
+
+        function addFood(event) {
+            const field = document.getElementById('fieldOfView');
+            const fieldRect = field.getBoundingClientRect();
+            
+            let x, y;
+            if (event) {
+                x = event.clientX - fieldRect.left;
+                y = event.clientY - fieldRect.top;
+            } else {
+                // Random position within field
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * 250;
+                x = 300 + Math.cos(angle) * radius;
+                y = 300 + Math.sin(angle) * radius;
+            }
+            
+            // Ensure within circular boundary
+            const distFromCenter = Math.sqrt((x - 300)**2 + (y - 300)**2);
+            if (distFromCenter > 280) return;
+            
+            const food = document.createElement('div');
+            food.className = 'food-particle';
+            food.style.left = `${x - 6}px`;
+            food.style.top = `${y - 6}px`;
+            field.appendChild(food);
+            
+            updateCounts();
+        }
+
+        function addNutrientBurst() {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => addFood(), i * 150);
+            }
+        }
+
+        function updateCounts() {
+            const foodCount = document.querySelectorAll('.food-particle').length;
+            const wasteCount = document.querySelectorAll('.waste-particle').length;
+            const aliveCount = paramecia.filter(p => p.alive).length;
+            
+            document.getElementById('foodCount').textContent = foodCount;
+            document.getElementById('wasteCount').textContent = wasteCount;
+            document.getElementById('populationCount').textContent = aliveCount;
+        }
+
+        function gameLoop() {
+            if (!isPaused) {
+                simulationTime = (Date.now() - startTime) / 1000;
+                document.getElementById('simTime').textContent = Math.floor(simulationTime) + 's';
+                
+                // Update all paramecia
+                paramecia = paramecia.filter(p => p.alive || p.element.parentNode);
+                paramecia.forEach(p => p.update());
+                
+                updateCounts();
+                updateEnvironmentalDisplay();
+                
+                // Automatic food generation (research simulation feature)
+                if (Math.random() < 0.003) {
+                    addFood();
+                }
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resetSimulation() {
+            // Clear all elements
+            paramecia.forEach(p => {
+                if (p.element.parentNode) {
+                    p.element.remove();
+                }
+                const card = document.getElementById(`card-${p.id}`);
+                if (card && card.parentNode) {
+                    card.remove();
+                }
+            });
+            
+            document.querySelectorAll('.food-particle, .waste-particle').forEach(el => el.remove());
+            
+            paramecia = [];
+            startTime = Date.now();
+            simulationTime = 0;
+            
+            // Reset environmental parameters
+            document.getElementById('tempSlider').value = 22;
+            document.getElementById('phSlider').value = 7.0;
+            document.getElementById('oxygenSlider').value = 21;
+            document.getElementById('salinitySlider').value = 0.1;
+            
+            initSimulation();
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            if (!isPaused) {
+                startTime = Date.now() - simulationTime * 1000;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('fieldOfView').addEventListener('click', addFood);
+        
+        // Environmental control listeners
+        ['tempSlider', 'phSlider', 'oxygenSlider', 'salinitySlider'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateEnvironmentalDisplay);
+        });
+
+        // Initialize simulation
+        initSimulation();
+        updateEnvironmentalDisplay();
+        gameLoop();
+
+        // Add some initial food for research purposes
+        setTimeout(() => {
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => addFood(), i * 800);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
