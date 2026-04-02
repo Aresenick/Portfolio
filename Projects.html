@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="images/nub-nub-cat.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects — Linge Shi</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .no-preview {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin: 0;
+    }
+    .popup-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    .popup-table th, .popup-table td {
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-grey);
+    }
+    .popup-table th {
+      background: var(--light-grey);
+      font-weight: 500;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+    .popup-table tfoot td {
+      font-weight: 600;
+      border-top: 2px solid var(--border-grey);
+      border-bottom: none;
+    }
+    .popup-project-link-disabled {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+    .project-popup-trigger { cursor: pointer; }
+    .project-popup-trigger:hover { border-color: var(--primary-blue) !important; }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+
+  <nav>
+    <div class="nav-content">
+      <a href="index.html" class="logo">Linge Shi</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CV.html">CV</a></li>
+        <li><a href="VCE.html">VCE</a></li>
+        <li><a href="Projects.html" class="active">Projects</a></li>
+        <li><a href="Blog.html">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Research &amp; Projects</h1>
+    <div class="page-divider"></div>
+  </div>
+
+  <main>
+
+    <!-- Featured Project -->
+    <section class="featured-project project-popup-trigger" data-project="physics-research">
+      <div class="featured-image">
+        <img src="images/fizik_pro.png" alt="Featured Physics Project" />
+      </div>
+      <div class="featured-content">
+        <div class="project-category">Featured Project</div>
+        <h2>Experimental design — exploring quantum pathways</h2>
+        <p>
+          This project explores the intersection of quantum physics and material science, using simulations and real-world experiments to uncover how photon diffraction works. An independent project investigating how the "action principle" is applied in photons and other quantum particles.
+        </p>
+        <div class="project-links">
+          <a href="projects/Experimental design_LingeShi_Entrycode_exploring quantum pathways 2.pdf" class="contact-link" onclick="event.stopPropagation();">View Paper</a>
+          <a href="projects/analyser.py" class="contact-link" onclick="event.stopPropagation();">Analyser Tool</a>
+          <button class="read-more-btn" onclick="event.stopPropagation(); openProjectPopup('physics-research');">Read More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Current Projects -->
+    <div class="hero">
+      <h2>Current Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card project-popup-trigger" data-project="chemi">
+        <div class="project-image">
+          <img src="images/chemi.png" width="1200" height="300" alt="CHEMI" />
+        </div>
+        <div class="project-content">
+          <div class="project-category">Programming &bull; Design</div>
+          <h3>CHEMI</h3>
+          <p>A coding challenge involving designing and building a chemistry study website with dynamic calculators, question databases, and practice tools. Developed using Claude Code alongside manual HTML, CSS, and JavaScript.</p>
+          <div class="project-meta">
+            <span>Jun 2025–2027</span>
+            <span>In Progress</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/CHEMI-main/CHEMI.pdf" class="contact-link" onclick="event.stopPropagation();">Wireframe Files</a>
+            <a href="projects/CHEMI-main/index.html" class="contact-link" onclick="event.stopPropagation();">A Sneak Peek</a>
+            <button class="read-more-btn" onclick="event.stopPropagation(); openProjectPopup('chemi');">Read More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Projects -->
+    <div class="hero">
+      <h2>Completed Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card project-popup-trigger" data-project="statistics-challenge">
+        <div class="project-image">
+          <img src="images/statistics.png" width="4500" height="300" alt="Statistics Challenge" />
+        </div>
+        <div class="project-content">
+          <div class="project-category">Mathematics &bull; Analysis</div>
+          <h3>Maths and Statistics Challenge</h3>
+          <p>A deep dive into advanced statistical methods and data analysis, culminating in a published report. Led the analysis and data visualisation efforts for this collaborative challenge.</p>
+          <div class="project-meta">
+            <span>Aug 2025</span>
+            <span>📊 Complete</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/Senior_Box_Hill_High_School_Funky_Derivatives_L.SHI_and_Y.deCoonghe 1.pdf" class="contact-link" onclick="event.stopPropagation();">View Report</a>
+            <button class="read-more-btn" onclick="event.stopPropagation(); openProjectPopup('statistics-challenge');">Read More</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card project-popup-trigger" data-project="IMMC">
+        <div class="project-image">
+          <img src="images/Etosha-National-Park.jpg" width="3500" height="350" alt="IMMC Mathematical Modelling" />
+        </div>
+        <div class="project-content">
+          <div class="project-category">Mathematical Modelling</div>
+          <h3>IMMC — Wildlife Protection Optimisation</h3>
+          <p>A five-day international mathematical modelling challenge. Developed the Composite Animal Safety Risk Index (CASRI) to optimise wildlife surveillance and ranger deployment across Etosha National Park's 22,935 km².</p>
+          <div class="project-meta">
+            <span>Mar 2026</span>
+            <span>📊 Complete</span>
+          </div>
+          <div class="project-links">
+            <p class="no-preview">No preview available</p>
+            <button class="read-more-btn" onclick="event.stopPropagation(); openProjectPopup('IMMC');">Read More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Project Detail Popup -->
+  <div id="project-popup" class="popup-overlay">
+    <div class="popup-content">
+      <span class="popup-close" onclick="closeProjectPopup()">&times;</span>
+      <div id="popup-project-content"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Linge Shi. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const projectData = {
+
+      "physics-research": {
+        id: "physics-research",
+        content: `
+          <div class="popup-project-header">
+            <div class="popup-project-category">Physics • Research</div>
+            <h1>Exploring Quantum Pathways</h1>
+            <div class="popup-project-meta">
+              <span>📅 Oct 2025</span>
+              <span>🔖 STS Submission</span>
+            </div>
+          </div>
+          <div class="popup-project-image">
+            <img src="images/quantum_pathways.jpg" alt="Exploring Quantum Pathways" />
+          </div>
+          <div class="popup-project-content">
+            <section class="popup-section">
+              <h2>Project Overview</h2>
+              <p>This project investigates one of the most fundamental yet misunderstood experiments in physics — the double-slit experiment — and extends it into a practical demonstration of Richard Feynman's <em>path integral formulation</em> of quantum mechanics. Rather than viewing light as travelling along a single trajectory, this research tests whether the visible beam is the result of interference across <strong>all possible photon paths</strong>.</p>
+              <p>By systematically increasing the number of slits from one to two hundred, the experiment traces how a classical interference pattern evolves into a sharply defined beam. The final setup — a semi-permeable sheet with 200 fine slits — produced a single, bright, focused beam, visually demonstrating that the observed path emerges from the constructive interference of all quantum possibilities, with only the <em>path of least action</em> surviving.</p>
+            </section>
+            <section class="popup-section">
+              <h2>What I Did</h2>
+              <ul>
+                <li>Constructed and stabilised a multi-slit optical system using a 650 nm (±10 nm) laser pointer (0.4 mW) and precision-engineered slit and Moiré grating plates</li>
+                <li>Captured diffraction and interference patterns using an iPhone 15 camera aligned orthogonally to the projection screen</li>
+                <li>Designed a custom HTML-based light intensity analyser to process images by extracting red-channel RGB data for fringe detection and quantification</li>
+                <li>Applied theoretical relationships (Δx = λL / d) to correlate fringe spacing with slit separation and aperture count</li>
+                <li>Analysed the evolution of interference peaks (0 to 31 peaks) as slit number increased from 1 to 200</li>
+                <li>Interpreted findings using Feynman's path integral concept, comparing experimental data with quantum probability amplitude theory</li>
+                <li>Submitted to the 74th <strong>Science Talent Search (STS) 2025</strong> under the experimental design category</li>
+              </ul>
+            </section>
+            <section class="popup-section">
+              <h2>Technical Details</h2>
+              <p>The experimental setup involved a laser stabilised on a clamp stand, slit plates fixed perpendicular to the beam, and a 1.0 m projection distance maintained consistently across all trials. All experiments were conducted in a fully darkened room to eliminate background interference.</p>
+              <p>Each diffraction pattern was digitally recorded and analysed using Python-assisted HTML scripts that calculated average fringe intensity, spacing, and peak count. Results were cross-checked against theoretical predictions from classical wave interference and Feynman's probabilistic model.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Results &amp; Outcomes</h2>
+              <p>Results demonstrated a progressive narrowing and intensification of the central fringe as slit count increased. The double-slit configuration produced seven distinct peaks; the 20- and 200-slit arrangements produced over 30 and 26 peaks respectively — consistent with multi-path interference theory. This validates the hypothesis: greater numbers of coherent paths enhance constructive interference, refining the beam's focus.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Links &amp; Resources</h2>
+              <div class="popup-project-links">
+                <a href="projects/Experimental design_LingeShi_Entrycode_exploring quantum pathways 2.pdf" class="popup-project-link">Full Research Paper (PDF)</a>
+                <a href="projects/analyser.py" class="popup-project-link">Diffraction Pattern Analyser</a>
+              </div>
+            </section>
+          </div>
+        `
+      },
+
+      "chemi": {
+        id: "chemi",
+        content: `
+          <div class="popup-project-header">
+            <div class="popup-project-category">Engineering • Design</div>
+            <h1>CHEMI</h1>
+            <div class="popup-project-meta">
+              <span>📅 2025–2027</span>
+              <span>🔖 In Progress</span>
+            </div>
+          </div>
+          <div class="popup-project-image">
+            <img src="images/chemi_app.jpg" alt="CHEMI Web App" />
+          </div>
+          <div class="popup-project-content">
+            <section class="popup-section">
+              <h2>Project Overview</h2>
+              <p><strong>CHEMI</strong> is a web and mobile platform designed to help students master chemistry through interactive calculators, question databases, and structured practice tools. Built using Claude Code alongside manual HTML, CSS, and JavaScript, the project combines intuitive design, structured data systems, and algorithmic computation to make chemistry accessible and practical for VCE students.</p>
+              <p>Modules include molar mass calculation, balanced equation solving, and a curated database of past VCE chemistry questions organised by year, topic, and difficulty. Users can log in, save history, adjust themes and text size, and track learning progress.</p>
+            </section>
+            <section class="popup-section">
+              <h2>My Role &amp; Learning Journey</h2>
+              <ul>
+                <li>Independently learned coding structure and file hierarchy by analysing existing web app frameworks</li>
+                <li>Built dynamic front-end interfaces combining Claude Code scaffolding with manual HTML, CSS, and JavaScript refinement</li>
+                <li>Created and structured multiple interconnected databases for questions, user data, and topic categorisation using JSON</li>
+                <li>Integrated React-style logic, JavaScript event handling, and database queries into a cohesive app ecosystem</li>
+                <li>Studied backend architecture to understand data flow between client and server — authentication, state management, and storage</li>
+                <li>Practised debugging, testing, and refactoring to understand how every function, variable, and query interacts at runtime</li>
+              </ul>
+            </section>
+            <section class="popup-section">
+              <h2>Technical Details</h2>
+              <p>CHEMI's structure is based on modular design, with distinct sections for calculator tools, question banks, and user interaction systems. The wireframe outlines a layered layout including login/signup, dynamic calculators, searchable question databases, and topic filters for VCE Units 1–4.</p>
+              <p>Database functions handle text-based queries, filter selection, and search-by-topic retrieval (Atomic Structure, Bonding, Stoichiometry, etc.). Future plans include Python back-end integration for auto-grading and AI-powered question generation.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Links &amp; Resources</h2>
+              <div class="popup-project-links">
+                <a href="https://chem-calc-pro-b4c1af7d.base44.app/" class="popup-project-link">Live Demo</a>
+                <a href="projects/CHEMI-main/CHEMI.pdf" class="popup-project-link">Wireframe PDF</a>
+                <a href="projects/CHEMI-main/index.html" class="popup-project-link">Sneak Peek</a>
+              </div>
+            </section>
+          </div>
+        `
+      },
+
+      "statistics-challenge": {
+        id: "statistics-challenge",
+        content: `
+          <div class="popup-project-header">
+            <div class="popup-project-category">Mathematics • Analysis</div>
+            <h1>Maths and Statistics Challenge</h1>
+            <div class="popup-project-meta">
+              <span>📅 Aug 2025</span>
+              <span>🔖 Complete</span>
+            </div>
+          </div>
+          <div class="popup-project-image">
+            <img src="images/statistics.png" alt="Statistics Challenge" />
+          </div>
+          <div class="popup-project-content">
+            <section class="popup-section">
+              <h2>Project Overview</h2>
+              <p>A collaborative deep dive into advanced statistical methods and data analysis, culminating in a published research report. The project involved analysing real-world datasets and developing statistical models to identify meaningful patterns and relationships.</p>
+            </section>
+            <section class="popup-section">
+              <h2>My Role &amp; Contributions</h2>
+              <ul>
+                <li>Led statistical analysis using R and Python</li>
+                <li>Created comprehensive data visualisations and interpretive charts</li>
+                <li>Co-authored the final research report and presentation materials</li>
+                <li>Presented findings to the academic panel</li>
+              </ul>
+            </section>
+            <section class="popup-section">
+              <h2>Links &amp; Resources</h2>
+              <div class="popup-project-links">
+                <a href="projects/Senior_Box_Hill_High_School_Funky_Derivatives_L.SHI_and_Y.deCoonghe 1.pdf" class="popup-project-link">Published Report</a>
+              </div>
+            </section>
+          </div>
+        `
+      },
+
+      "IMMC": {
+        id: "IMMC",
+        content: `
+          <div class="popup-project-header">
+            <div class="popup-project-category">Mathematical Modelling • Conservation Science</div>
+            <h1>IMMC — Wildlife Protection Optimisation</h1>
+            <div class="popup-project-meta">
+              <span>📅 Mar 2026</span>
+              <span>🔖 Complete</span>
+              <span>🌍 International Competition</span>
+            </div>
+          </div>
+          <div class="popup-project-content">
+            <section class="popup-section">
+              <h2>Project Overview</h2>
+              <p>This five-day international mathematical modelling challenge tasked our team with developing a dynamic wildlife protection strategy for <strong>Etosha National Park (ENP)</strong> in Namibia — a 22,935 km² reserve home to critically endangered species including black rhinoceroses, elephants, cheetahs, and flamingos. Moving beyond traditional, static patrol methods, we developed the <strong>Composite Animal Safety Risk Index (CASRI)</strong> — a continuous, mathematically rigorous risk heat map integrating ten distinct environmental, human, and ecological factors into a single spatial score.</p>
+            </section>
+            <section class="popup-section">
+              <h2>The Core Model — CASRI</h2>
+              <p>The CASRI framework was built in four stages: factor identification from published conservation research and MEFT operational data; normalisation of each factor to a 0–1 range using linear scaling, negative exponential decay, or sigmoid scaling; AHP weighting via pairwise comparison (CR = 0.0129); and final score combination with a seasonal amplifier and waterhole–clustering interaction term.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Factor Weights</h2>
+              <table class="popup-table">
+                <thead>
+                  <tr><th>Factor</th><th>Code</th><th>Weight</th><th>Normalisation</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Poaching Pressure</td><td>PP</td><td>0.20</td><td>Linear</td></tr>
+                  <tr><td>Wildfire Frequency</td><td>WF</td><td>0.15</td><td>Sigmoid</td></tr>
+                  <tr><td>Staff &amp; Patrol Coverage</td><td>SP</td><td>0.13</td><td>Linear</td></tr>
+                  <tr><td>Boundary Proximity</td><td>BP</td><td>0.12</td><td>Exponential</td></tr>
+                  <tr><td>Waterhole Proximity</td><td>WP</td><td>0.10</td><td>Exponential</td></tr>
+                  <tr><td>Seasonal Clustering</td><td>SC</td><td>0.10</td><td>Linear</td></tr>
+                  <tr><td>Human Disturbance</td><td>HD</td><td>0.08</td><td>Linear</td></tr>
+                  <tr><td>Road Density</td><td>RD</td><td>0.08</td><td>Linear</td></tr>
+                  <tr><td>Terrain Difficulty</td><td>TD</td><td>0.07</td><td>Sigmoid</td></tr>
+                  <tr><td>Waterhole Density</td><td>WD</td><td>0.07</td><td>Inverted Linear</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><td colspan="2"><strong>Total</strong></td><td><strong>1.00</strong></td><td></td></tr>
+                </tfoot>
+              </table>
+            </section>
+            <section class="popup-section">
+              <h2>Species Vulnerability Index (SVI)</h2>
+              <p>Because the park is home to 114 mammal species and over 400 bird species, we developed a <strong>Species Vulnerability Index (SVI)</strong> scoring six factors: IUCN status, local population size, mobility and escape capacity, habitat specificity, known threat exposure within ENP, and black market value (log-normalised USD export price). Black rhinoceroses receive the highest SVI of 1.00; springbok score 0.25.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Scalability — Application to Other Parks</h2>
+              <p>The CASRI framework was applied to <strong>Kruger National Park, South Africa</strong> (19,485 km²) and <strong>Amboseli National Park, Kenya</strong> (392 km²). In Amboseli, the 20 km² surrounding the two permanent swamps produces a localised CASRI of 0.895 — the highest localised score across all three parks.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Results &amp; Validation</h2>
+              <p>The model was validated against ground-truth MEFT data (2022–2025): CASRI correctly ranked every confirmed high-risk zone above every confirmed low-risk zone. The highest-risk block recorded 147 poaching incidents in 2023/24; the lowest-risk block recorded none. The Consistency Ratio of CR = 0.0129 confirmed logical coherence of all pairwise factor comparisons.</p>
+            </section>
+            <section class="popup-section">
+              <h2>Links &amp; Resources</h2>
+              <div class="popup-project-links">
+                <span class="popup-project-link-disabled">Report — Not publicly available (competition rules)</span>
+              </div>
+            </section>
+          </div>
+        `
+      }
+    };
+
+    function openProjectPopup(projectId) {
+      const project = projectData[projectId];
+      if (!project) return;
+      document.getElementById('popup-project-content').innerHTML = project.content;
+      document.getElementById('project-popup').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectPopup() {
+      document.getElementById('project-popup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('project-popup').addEventListener('click', function (e) {
+      if (e.target === this) closeProjectPopup();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.getElementById('project-popup').style.display === 'flex') {
+        closeProjectPopup();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="images/nub-nub-cat.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — Linge Shi</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-pattern"></div>
+
+  <nav>
+    <div class="nav-content">
+      <a href="index.html" class="logo">Linge Shi</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CV.html">CV</a></li>
+        <li><a href="VCE.html">VCE</a></li>
+        <li><a href="Projects.html">Projects</a></li>
+        <li><a href="Blog.html" class="active">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Blog</h1>
+    <div class="page-divider"></div>
+    <p>Thoughts, reflections, and rabbit-holes.</p>
+  </div>
+
+  <main>
+
+    <div class="categories-filter">
+      <a href="#" class="category-tag active" data-filter="all">All</a>
+      <a href="#" class="category-tag" data-filter="physics">Physics</a>
+      <a href="#" class="category-tag" data-filter="maths">Mathematics</a>
+      <a href="#" class="category-tag" data-filter="life">Life &amp; School</a>
+      <a href="#" class="category-tag" data-filter="tech">Tech &amp; Coding</a>
+    </div>
+
+    <div class="blog-list" id="blog-list">
+
+      <!-- Example post — duplicate this block to add more entries -->
+      <article class="blog-post" data-category="physics">
+        <div class="blog-image">
+          <img src="images/fizik_pro.png" alt="Quantum Pathways" />
+        </div>
+        <div class="blog-header">
+          <div class="blog-category">Physics</div>
+          <h2 class="blog-title">What Feynman taught me about light (and indecision)</h2>
+        </div>
+        <p class="blog-excerpt">
+          I spent three months staring at laser dots on a wall. Here's what the path integral formulation actually means, and why it changed the way I think about everything from physics to decisions.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">Quantum Mechanics</span>
+          <span class="tag">Feynman</span>
+          <span class="tag">Optics</span>
+        </div>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span>📅 Oct 2025</span>
+            <span>6 min read</span>
+          </div>
+          <button class="read-more-btn" onclick="openBlogPopup('feynman-post')">Read More</button>
+        </div>
+      </article>
+
+      <article class="blog-post" data-category="life">
+        <div class="blog-image" style="background: var(--light-blue); display:flex; align-items:center; justify-content:center; height:250px;">
+          <span style="font-size:3rem;">🦁</span>
+        </div>
+        <div class="blog-header">
+          <div class="blog-category">Life &amp; School</div>
+          <h2 class="blog-title">Five days, one equation, 22,935 km² — the IMMC experience</h2>
+        </div>
+        <p class="blog-excerpt">
+          What it's actually like to spend five days solving a real conservation problem under competition pressure, with no internet, four teammates, and a blank sheet of paper.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">IMMC</span>
+          <span class="tag">Modelling</span>
+          <span class="tag">Competition</span>
+        </div>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span>📅 Apr 2026</span>
+            <span>8 min read</span>
+          </div>
+          <button class="read-more-btn" onclick="openBlogPopup('immc-post')">Read More</button>
+        </div>
+      </article>
+
+      <article class="blog-post" data-category="maths">
+        <div class="blog-image" style="background: var(--light-grey); display:flex; align-items:center; justify-content:center; height:250px;">
+          <span style="font-size:3rem;">∑</span>
+        </div>
+        <div class="blog-header">
+          <div class="blog-category">Mathematics</div>
+          <h2 class="blog-title">Why I love Mathematical Methods (and it's not what you think)</h2>
+        </div>
+        <p class="blog-excerpt">
+          Most people think maths is about getting the right answer. I think it's about the feeling of something clicking. A post about intuition, aesthetics, and why calculus feels like music.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">VCE</span>
+          <span class="tag">Calculus</span>
+          <span class="tag">Reflection</span>
+        </div>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span>📅 Coming soon</span>
+            <span>— min read</span>
+          </div>
+          <button class="read-more-btn" style="opacity:0.5;cursor:default;" disabled>Coming Soon</button>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- Blog Popup -->
+  <div id="blog-popup" class="popup-overlay">
+    <div class="popup-content">
+      <span class="popup-close" onclick="closeBlogPopup()">&times;</span>
+      <div id="popup-blog-content"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Linge Shi. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const blogData = {
+      "feynman-post": `
+        <div class="popup-blog-header">
+          <div class="popup-blog-category">Physics</div>
+          <h1>What Feynman taught me about light (and indecision)</h1>
+          <div class="popup-blog-meta">
+            <span>📅 Oct 2025</span>
+            <span>6 min read</span>
+          </div>
+          <div class="popup-blog-tags">
+            <span class="tag">Quantum Mechanics</span>
+            <span class="tag">Feynman</span>
+            <span class="tag">Optics</span>
+          </div>
+        </div>
+        <div class="popup-blog-content">
+          <p>I started this project because I was annoyed. My physics teacher explained the double-slit experiment and then, when I asked <em>why</em> the photon goes through both slits at once, said: "it just does." That wasn't good enough for me.</p>
+          <h2>The setup</h2>
+          <p>Three months later I was in my bedroom at midnight with a 0.4 mW laser pointer, a clamp stand fashioned from a stack of textbooks, and a very patient wall. The idea was simple: if Feynman is right that a photon takes <em>all possible paths simultaneously</em>, then adding more slits should sharpen the beam — because more paths means more chances for the right ones to constructively interfere.</p>
+          <h2>What actually happened</h2>
+          <p>At 1 slit: a broad blob. At 2 slits: those unmistakeable alternating fringes. At 20 slits: a tighter central peak, fainter satellites. At 200 slits: one sharp, bright line. The beam had emerged from the noise. Not because I forced it — because all the wrong paths cancelled each other out, and the right path was left standing.</p>
+          <h2>The thing I keep thinking about</h2>
+          <p>Feynman's idea is that nature is genuinely indecisive at the quantum level. The photon doesn't "choose" a path — it explores all of them, and the one we observe is just the one that survives interference. There's something almost philosophical about that. Uncertainty isn't a failure of the system. It's how the system works.</p>
+          <p>I don't think that's only true of photons.</p>
+        </div>
+      `,
+      "immc-post": `
+        <div class="popup-blog-header">
+          <div class="popup-blog-category">Life &amp; School</div>
+          <h1>Five days, one equation, 22,935 km²</h1>
+          <div class="popup-blog-meta">
+            <span>📅 Apr 2026</span>
+            <span>8 min read</span>
+          </div>
+          <div class="popup-blog-tags">
+            <span class="tag">IMMC</span>
+            <span class="tag">Modelling</span>
+            <span class="tag">Competition</span>
+          </div>
+        </div>
+        <div class="popup-blog-content">
+          <p>Day one of the IMMC, our team stared at the problem statement for about twenty minutes without saying anything. The task: help Etosha National Park figure out where to send its rangers. The park is the size of a small country. They have almost no resources. Poaching is rising. Where do you even start?</p>
+          <h2>The blank page problem</h2>
+          <p>Mathematical modelling competitions are strange. You have all the freedom in the world — and that's the hardest part. In a normal maths exam, the path is laid out for you. Here, you have to decide what the problem even is before you can solve it.</p>
+          <p>We spent the first afternoon just listing factors. Poaching history. Waterhole locations. Seasonal animal clustering. Proximity to the park boundary. Road density. Terrain. By the end of day one we had ten variables and no idea how to combine them.</p>
+          <h2>The insight</h2>
+          <p>The breakthrough came on day two when someone suggested we treat the park as a continuous surface and assign each point a single risk score. Simple in theory. The challenge was making the weighting defensible — not just guessing that poaching pressure matters more than road density, but proving it mathematically.</p>
+          <p>That's where AHP came in. The Analytic Hierarchy Process lets you compare every pair of factors and derive a weight set that's internally consistent. Our consistency ratio came out at 0.0129 — well below the 0.10 threshold. The model wasn't just intuitive. It was provably coherent.</p>
+          <h2>What five days taught me</h2>
+          <p>I came in thinking modelling was about finding the right equation. I left thinking modelling is about choosing the right assumptions — and then being honest about them. Every model is wrong. The question is whether it's usefully wrong.</p>
+        </div>
+      `
+    };
+
+    function openBlogPopup(postId) {
+      const content = blogData[postId];
+      if (!content) return;
+      document.getElementById('popup-blog-content').innerHTML = content;
+      document.getElementById('blog-popup').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBlogPopup() {
+      document.getElementById('blog-popup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('blog-popup').addEventListener('click', function (e) {
+      if (e.target === this) closeBlogPopup();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.getElementById('blog-popup').style.display === 'flex') {
+        closeBlogPopup();
+      }
+    });
+
+    /* Category filter */
+    document.querySelectorAll('.category-tag').forEach(tag => {
+      tag.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.blog-post').forEach(post => {
+          post.style.display = (filter === 'all' || post.dataset.category === filter) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
