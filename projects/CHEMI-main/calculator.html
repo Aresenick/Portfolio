@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEMI - Chemistry Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-brand">
+            <button class="mobile-menu-btn" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="home.html" class="brand-logo">
+                <div class="logo-text">CHEMI</div>
+                <div class="logo-copyright">© Linge</div>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <a href="calculator.html" class="nav-link active">calculator</a>
+            <a href="practice.html" class="nav-link">practice</a>
+            <a href="questions.html" class="nav-link">past VCE questions</a>
+            <div class="user-menu">
+                <button class="user-btn" id="userMenuBtn">
+                    <span>login/sign up</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <button class="collapse-btn" id="collapseBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search calculators..." id="calcSearch">
+                    <i class="fas fa-search search-icon"></i>
+                    <button class="clear-search" id="clearSearch" style="display: none;">×</button>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Calculator Categories -->
+            <div class="calculator-categories">
+                <div class="category-header">
+                    <label class="filter-label">category</label>
+                    <select class="category-select" id="categorySelect">
+                        <option value="all">All Categories</option>
+                        <option value="stoichiometry">Stoichiometry</option>
+                        <option value="thermodynamics">Thermodynamics</option>
+                        <option value="solutions">Solutions & pH</option>
+                        <option value="gas-laws">Gas Laws</option>
+                        <option value="reference">Reference Tools</option>
+                    </select>
+                </div>
+
+                <!-- Stoichiometry Category -->
+                <div class="calc-category" data-category="stoichiometry">
+                    <div class="category-title" onclick="toggleCategory(this)">
+                        <span>Stoichiometry</span>
+                        <span class="category-arrow">▼</span>
+                    </div>
+                    <div class="calc-list">
+                        <button class="calc-item" onclick="addCalculatorByType('molar-mass')"
+                                data-search="molar mass molecular weight Ar relative atomic mass Mr formula mass">
+                            <div class="calc-name">Molar Mass (Mr)</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('mass-moles')"
+                                data-search="mass moles conversion stoichiometry n=m/M">
+                            <div class="calc-name">Mass ↔ Moles</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('percent-yield')"
+                                data-search="percent yield efficiency actual theoretical yield">
+                            <div class="calc-name">Percent Yield</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('limiting-reagent')"
+                                data-search="limiting reagent reactant excess stoichiometry">
+                            <div class="calc-name">Limiting Reagent</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Solutions & pH Category -->
+                <div class="calc-category" data-category="solutions">
+                    <div class="category-title" onclick="toggleCategory(this)">
+                        <span>Solutions & pH</span>
+                        <span class="category-arrow">▼</span>
+                    </div>
+                    <div class="calc-list">
+                        <button class="calc-item" onclick="addCalculatorByType('molarity')"
+                                data-search="molarity concentration M mol/L solution">
+                            <div class="calc-name">Molarity</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('dilution')"
+                                data-search="dilution C1V1=C2V2 concentration volume">
+                            <div class="calc-name">Dilution</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('ph-calculation')"
+                                data-search="pH calculation hydrogen ion concentration">
+                            <div class="calc-name">pH Calculation</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('h-concentration')"
+                                data-search="hydrogen ion concentration pH [H+]">
+                            <div class="calc-name">[H⁺] from pH</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thermodynamics Category -->
+                <div class="calc-category" data-category="thermodynamics">
+                    <div class="category-title" onclick="toggleCategory(this)">
+                        <span>Thermodynamics</span>
+                        <span class="category-arrow">▼</span>
+                    </div>
+                    <div class="calc-list">
+                        <button class="calc-item" onclick="addCalculatorByType('heat-capacity')"
+                                data-search="heat capacity q=mcΔT enthalpy temperature change">
+                            <div class="calc-name">Heat Energy</div>
+                        </button>
+
+                        <button class="calc-item" onclick="addCalculatorByType('temperature-converter')"
+                                data-search="temperature conversion celsius kelvin fahrenheit">
+                            <div class="calc-name">Temperature Converter</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gas Laws Category -->
+                <div class="calc-category" data-category="gas-laws">
+                    <div class="category-title" onclick="toggleCategory(this)">
+                        <span>Gas Laws</span>
+                        <span class="category-arrow">▼</span>
+                    </div>
+                    <div class="calc-list">
+                        <button class="calc-item" onclick="addCalculatorByType('ideal-gas')"
+                                data-search="ideal gas law PV=nRT pressure volume temperature">
+                            <div class="calc-name">Ideal Gas Law</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reference Tools Category -->
+                <div class="calc-category" data-category="reference">
+                    <div class="category-title" onclick="toggleCategory(this)">
+                        <span>Reference Tools</span>
+                        <span class="category-arrow">▼</span>
+                    </div>
+                    <div class="calc-list">
+                        <button class="calc-item" onclick="addCalculatorByType('ion-charge')"
+                                data-search="ion charge lookup periodic table ions">
+                            <div class="calc-name">Ion Lookup</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Minimized Calculators Bar -->
+            <div class="minimized-calculators" id="minimizedCalculators" style="display: none;">
+                <div class="minimized-header">
+                    <h3><i class="fas fa-window-minimize"></i> Minimized Calculators</h3>
+                    <button class="clear-all-btn" id="clearAllBtn">
+                        <i class="fas fa-trash"></i>
+                        Clear All
+                    </button>
+                </div>
+                <div class="minimized-buttons" id="minimizedButtons">
+                    <!-- Minimized calculator buttons will appear here -->
+                </div>
+            </div>
+
+            <div class="workspace" id="workspace">
+                <!-- Calculation boxes will be added here dynamically -->
+            </div>
+
+            <div class="empty-workspace" id="emptyWorkspace">
+                <i class="fas fa-calculator"></i>
+                <h3>Your workspace is empty</h3>
+                <p>Select calculations from the sidebar to get started</p>
+            </div>
+
+            <!-- Floating Clear All Button -->
+            <button class="floating-clear-btn" id="floatingClearBtn" style="display: none;">
+                <i class="fas fa-trash"></i>
+                Clear All
+            </button>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Load modular JavaScript files in dependency order -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/calculator-search.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/practice-mode.js"></script>
+    <script src="js/calculator-core.js"></script>
+    <script src="js/calculations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEMI - Past VCE Questions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="questions-style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-brand">
+            <a href="home.html" class="brand-logo">
+                <div class="logo-text">CHEMI</div>
+                <div class="logo-copyright">© Linge</div>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <a href="calculator.html" class="nav-link">calculator</a>
+            <a href="practice.html" class="nav-link">practice</a>
+            <a href="questions.html" class="nav-link active">past VCE questions</a>
+            <div class="user-menu">
+                <button class="user-btn" id="userMenuBtn">
+                    <span>login/sign up</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <!-- Year Filter -->
+            <div class="filter-section">
+                <h3>Year</h3>
+                <div class="year-slider-container">
+                    <div class="year-slider">
+                        <input type="range" id="yearRange" min="2016" max="2025" value="2024" step="1">
+                        <div class="year-labels">
+                            <span>2016</span>
+                            <span>2017</span>
+                            <span>2018</span>
+                            <span>2019</span>
+                            <span>2020</span>
+                            <span>2021</span>
+                            <span>2022</span>
+                            <span>2023</span>
+                            <span>2024</span>
+                            <span>2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unit Filter -->
+            <div class="filter-section">
+                <h3>Unit</h3>
+                <div class="unit-checkboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="unit" value="unit1" checked>
+                        <span class="checkmark"></span>
+                        Unit 1
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="unit" value="unit2">
+                        <span class="checkmark"></span>
+                        Unit 2
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="unit" value="unit3">
+                        <span class="checkmark"></span>
+                        Unit 3
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="unit" value="unit4">
+                        <span class="checkmark"></span>
+                        Unit 4
+                    </label>
+                </div>
+            </div>
+
+            <!-- Difficulty Filter -->
+            <div class="filter-section">
+                <h3>Difficulty</h3>
+                <div class="difficulty-checkboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="difficulty" value="easy" checked>
+                        <span class="checkmark"></span>
+                        easy
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="difficulty" value="medium">
+                        <span class="checkmark"></span>
+                        medium
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="difficulty" value="hard">
+                        <span class="checkmark"></span>
+                        hard
+                    </label>
+                </div>
+            </div>
+
+            <!-- Time Filter -->
+            <div class="filter-section">
+                <h3>Time</h3>
+                <div class="time-slider-container">
+                    <div class="time-slider">
+                        <input type="range" id="timeRange" min="0" max="6" value="3" step="1">
+                        <div class="time-labels">
+                            <span>0</span>
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Search -->
+            <div class="filter-section">
+                <h3>Text Search</h3>
+                <div class="search-container">
+                    <input type="text" id="textSearch" placeholder="Search questions...">
+                    <button class="clear-search" id="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Topic Selection -->
+            <div class="filter-section">
+                <h3>Topic Selection</h3>
+                <div class="topic-tree">
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="atomic-structure">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Atomic Structure and the Periodic Table</span>
+                        </button>
+                        <div class="topic-subcategories" id="atomic-structure">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="topic" value="structure-atom">
+                                <span class="checkmark"></span>
+                                Structure of the atom
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="topic" value="electron-config">
+                                <span class="checkmark"></span>
+                                Electron configurations
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="topic" value="periodic-trends">
+                                <span class="checkmark"></span>
+                                Periodic table trends
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="topic" value="element-properties">
+                                <span class="checkmark"></span>
+                                Properties of elements
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="chemical-bonding">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Chemical Bonding</span>
+                        </button>
+                        <div class="topic-subcategories" id="chemical-bonding">
+                            <!-- Subcategories will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="materials-properties">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Materials and Their Properties</span>
+                        </button>
+                        <div class="topic-subcategories" id="materials-properties">
+                            <!-- Subcategories will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- More topic categories based on VCE Study Design -->
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="environmental-chemistry">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Environmental Chemistry</span>
+                        </button>
+                        <div class="topic-subcategories" id="environmental-chemistry">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="chemical-energetics">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Chemical Energetics</span>
+                        </button>
+                        <div class="topic-subcategories" id="chemical-energetics">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+
+                    <div class="topic-category">
+                        <button class="topic-toggle" data-target="chemical-equilibrium">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Chemical Equilibrium</span>
+                        </button>
+                        <div class="topic-subcategories" id="chemical-equilibrium">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question List Info -->
+            <div class="filter-section">
+                <h3>Question List</h3>
+                <div class="question-list-info">
+                    <select id="questionListSelect">
+                        <option value="default">updating... (name of question list, default: question list 1,2 etc)</option>
+                        <option value="custom1">Custom Question Set 1</option>
+                        <option value="custom2">Custom Question Set 2</option>
+                    </select>
+                    <div class="recommendation-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>year/topic/difficulty/marks/time recommended, text search:highlight text</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="questions-workspace">
+                <div class="questions-header">
+                    <h2>Past VCE Questions</h2>
+                    <div class="results-summary">
+                        <span id="resultsCount">Loading questions...</span>
+                    </div>
+                </div>
+
+                <!-- Question List -->
+                <div class="questions-list" id="questionsList">
+                    <!-- Questions will be dynamically loaded here -->
+                    <div class="question-placeholder">
+                        <i class="fas fa-search"></i>
+                        <h3>Select filters to find questions</h3>
+                        <p>Use the filters on the left to search through past VCE Chemistry questions</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/questions.js"></script>
+</body>
+</html>

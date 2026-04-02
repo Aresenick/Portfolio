@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEMI - Chemistry Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="home-style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-brand">
+            <a href="home.html" class="brand-logo">
+                <div class="logo-text">CHEMI</div>
+                <div class="logo-copyright">© Linge</div>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <a href="#" class="nav-link">calculator</a>
+            <a href="#" class="nav-link">practice</a>
+            <a href="#" class="nav-link active">past VCE questions</a>
+            <div class="user-menu">
+                <button class="user-btn" id="userMenuBtn">
+                    <span>login/sign up</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </button>
+                <!-- User dropdown menu -->
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="dropdown-header">
+                        <h4>settings</h4>
+                        <p>text size</p>
+                        <p>theme</p>
+                    </div>
+                    <div class="dropdown-section">
+                        <h4>account</h4>
+                        <p>email</p>
+                        <p>history</p>
+                        <p>log-out</p>
+                        <p>delete account</p>
+                    </div>
+                    <div class="dropdown-section">
+                        <h4>developer</h4>
+                        <p>github link to js files</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2>Hi, (user name), 👋</h2>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="action-cards">
+            <div class="action-card" onclick="navigateTo('calculator')">
+                <div class="card-content">
+                    <h3>calculator</h3>
+                </div>
+            </div>
+            <div class="action-card" onclick="navigateTo('practice')">
+                <div class="card-content">
+                    <h3>practice</h3>
+                </div>
+            </div>
+            <div class="action-card" onclick="navigateTo('questions')">
+                <div class="card-content">
+                    <h3>past VCE questions</h3>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/home.js"></script>
+</body>
+</html>

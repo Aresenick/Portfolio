@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEMI - Practice Mode</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="practice-style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-brand">
+            <a href="home.html" class="brand-logo">
+                <div class="logo-text">CHEMI</div>
+                <div class="logo-copyright">© Linge</div>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <button class="mobile-menu-btn" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="calculator.html" class="nav-link">calculator</a>
+            <a href="practice.html" class="nav-link active">practice</a>
+            <a href="questions.html" class="nav-link">past VCE questions</a>
+            <div class="user-menu">
+                <button class="user-btn" id="userMenuBtn">
+                    <span>login/sign up</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Calculator Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <button class="collapse-btn" id="collapseBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Quick Search & Tools -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search" id="quickSearch">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Chemistry Calculators -->
+            <div class="calculator-categories">
+                <div class="category-header">
+                    <h3>Chemistry Calculators</h3>
+                    <span class="category-subtitle">Select a calculator to get started</span>
+                </div>
+
+                <div class="calc-buttons">
+                    <!-- Basic Calculations -->
+                    <button class="calc-btn" onclick="addQuickTool('molar-mass')" data-tooltip="Calculate molecular mass from formula">
+                        <i class="fas fa-calculator"></i>
+                        <span class="calc-name">MOLAR MASS</span>
+                    </button>
+                    <button class="calc-btn" onclick="addCalculatorByType('mass-moles')" data-tooltip="Convert between mass and moles">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span class="calc-name">MASS ↔ MOLES</span>
+                    </button>
+                    <button class="calc-btn" onclick="addCalculatorByType('percent-yield')" data-tooltip="Calculate reaction efficiency">
+                        <i class="fas fa-percentage"></i>
+                        <span class="calc-name">% YIELD</span>
+                    </button>
+
+                    <!-- Gas Laws -->
+                    <button class="calc-btn" onclick="addCalculatorByType('ideal-gas')" data-tooltip="PV=nRT calculations">
+                        <i class="fas fa-wind"></i>
+                        <span class="calc-name">GAS LAWS</span>
+                    </button>
+
+                    <!-- Temperature -->
+                    <button class="calc-btn" onclick="addQuickTool('temperature')" data-tooltip="Convert °C ↔ K">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span class="calc-name">TEMPERATURE</span>
+                    </button>
+
+                    <!-- Heat Energy -->
+                    <button class="calc-btn" onclick="addCalculatorByType('heat-capacity')" data-tooltip="q = mcΔT calculations">
+                        <i class="fas fa-fire"></i>
+                        <span class="calc-name">HEAT ENERGY</span>
+                    </button>
+
+                    <!-- Solutions -->
+                    <button class="calc-btn" onclick="addCalculatorByType('molarity')" data-tooltip="Calculate solution concentration">
+                        <i class="fas fa-flask"></i>
+                        <span class="calc-name">MOLARITY</span>
+                    </button>
+                    <button class="calc-btn" onclick="addCalculatorByType('dilution')" data-tooltip="C₁V₁ = C₂V₂ calculations">
+                        <i class="fas fa-tint"></i>
+                        <span class="calc-name">DILUTION</span>
+                    </button>
+
+                    <!-- pH Calculations -->
+                    <button class="calc-btn" onclick="addCalculatorByType('ph-calculation')" data-tooltip="Calculate pH from [H⁺]">
+                        <i class="fas fa-vial"></i>
+                        <span class="calc-name">pH CALCULATION</span>
+                    </button>
+                    <button class="calc-btn" onclick="addCalculatorByType('h-concentration')" data-tooltip="Calculate [H⁺] from pH">
+                        <i class="fas fa-microscope"></i>
+                        <span class="calc-name">[H⁺] FROM pH</span>
+                    </button>
+
+                    <!-- Advanced Calculations -->
+                    <button class="calc-btn" onclick="addCalculatorByType('limiting-reagent')" data-tooltip="Find limiting reagent in reactions">
+                        <i class="fas fa-balance-scale"></i>
+                        <span class="calc-name">LIMITING REAGENT</span>
+                    </button>
+
+                    <!-- Reference Tools -->
+                    <button class="calc-btn" onclick="addQuickTool('ion-charge')" data-tooltip="Find ion charges and names">
+                        <i class="fas fa-search"></i>
+                        <span class="calc-name">ION LOOKUP</span>
+                    </button>
+
+                    <!-- Coming Soon -->
+                    <button class="calc-btn disabled" data-tooltip="Coming soon">
+                        <i class="fas fa-atom"></i>
+                        <span class="calc-name">BOND ENERGY</span>
+                    </button>
+                    <button class="calc-btn disabled" data-tooltip="Coming soon">
+                        <i class="fas fa-arrows-alt-h"></i>
+                        <span class="calc-name">EQUILIBRIUM</span>
+                    </button>
+                    <button class="calc-btn disabled" data-tooltip="Coming soon">
+                        <i class="fas fa-bolt"></i>
+                        <span class="calc-name">ELECTROCHEMISTRY</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Practice Area -->
+        <main class="practice-main">
+            <!-- Question Display -->
+            <div class="question-section">
+                <div class="question-header">
+                    <h2 id="questionTitle">Question</h2>
+                    <button class="hint-btn" id="hintBtn" onclick="showHint()">
+                        <i class="fas fa-lightbulb"></i> Hint
+                    </button>
+                </div>
+                <div class="question-text" id="questionText">
+                    Loading question...
+                </div>
+                <div class="answer-section">
+                    <div class="answer-input-group">
+                        <label for="answerInput">Your Answer:</label>
+                        <div class="answer-input-container">
+                            <input type="number" id="answerInput" placeholder="Enter your answer" step="any">
+                            <span class="answer-unit" id="answerUnit"></span>
+                            <button class="check-btn" onclick="checkAnswer()">
+                                <i class="fas fa-check"></i> Check
+                            </button>
+                        </div>
+                    </div>
+                    <div class="answer-feedback" id="answerFeedback" style="display: none;"></div>
+                </div>
+                <div class="question-navigation">
+                    <button class="nav-btn" onclick="previousQuestion()" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="question-counter">
+                        <span id="currentQuestionNum">1</span> / <span id="totalQuestions">3</span>
+                    </span>
+                    <button class="nav-btn" onclick="nextQuestion()" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Minimized Calculators Bar -->
+            <div class="minimized-calculators" id="minimizedCalculators" style="display: none;">
+                <div class="minimized-header">
+                    <h3><i class="fas fa-window-minimize"></i> Minimized Calculators</h3>
+                    <button class="clear-all-btn" id="clearAllBtn">
+                        <i class="fas fa-trash"></i>
+                        Clear All
+                    </button>
+                </div>
+                <div class="minimized-buttons" id="minimizedButtons">
+                    <!-- Minimized calculator buttons will appear here -->
+                </div>
+            </div>
+
+            <div class="workspace" id="workspace">
+                <!-- Calculation boxes will be added here dynamically -->
+            </div>
+
+            <div class="empty-workspace" id="emptyWorkspace">
+                <i class="fas fa-calculator"></i>
+                <h3>Your workspace is empty</h3>
+                <p>Select calculators from the sidebar to answer the question</p>
+            </div>
+
+            <!-- Floating Clear All Button -->
+            <button class="floating-clear-btn" id="floatingClearBtn" style="display: none;">
+                <i class="fas fa-trash"></i>
+                Clear All
+            </button>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Load scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/calculator-core.js"></script>
+    <script src="js/calculations.js"></script>
+    <script src="js/practice.js"></script>
+</body>
+</html>
