@@ -121,6 +121,6 @@ This is a proprietary educational application. For licensing inquiries or suppor
 
 ## License
 
-© 2025 Linge. All rights reserved.
+© 2026 Linge. All rights reserved.
 
 **Version**: 1.0.0 (2025)
